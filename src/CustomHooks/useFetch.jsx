@@ -6,7 +6,7 @@ import useAuth from '../CustomHooks/useAuth';
 
 const axiosFetch = axios.create({
   // http://localhost:5000
-  baseURL: 'https://digital-bucket-server.vercel.app',
+  baseURL: 'https://bucket-server.vercel.app',
   // baseURL : 'http://localhost:5000',
   withCredentials: true,
   method: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
