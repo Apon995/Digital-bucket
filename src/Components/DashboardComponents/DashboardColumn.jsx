@@ -13,7 +13,7 @@ import ding from '../../assets/sounds/ding.mp3'
 
 
 
-function DashboardColumn({ isActive, Datas, ShowTaskModal}) {
+function DashboardColumn({ isActive, Datas, ShowTaskModal }) {
     const axiosFetch = useFetch();
 
     const [ShowDetails, setShowDetails] = useState(false);
@@ -41,60 +41,67 @@ function DashboardColumn({ isActive, Datas, ShowTaskModal}) {
 
 
 
-    const HandleDragAndDrop = (result) => {
-        const { destination } = result;
+
+    const HandleDragAndDrop = async (result) => {
+        const { source, destination } = result;
 
 
 
+        if (!destination) return;
 
 
-        if (!destination) {
-
-            return
-
+        if (
+            source.droppableId === destination.droppableId &&
+            source.index === destination.index
+        ) {
+            return;
         }
 
 
-        const playSound = () => {
-            const audio = new Audio(ding);
-            audio.play();
-          };
+        const updatedData = { ...data };
+        const [srcColId] = source.droppableId.split("-");
+        const [destColId] = destination.droppableId.split("-");
+
+        const sourceColumn = updatedData.Columns.find((c) => c.id == srcColId);
+        const destColumn = updatedData.Columns.find((c) => c.id == destColId);
+
+        const [movedTask] = sourceColumn.Task.splice(source.index, 1);
 
 
+        if (srcColId !== destColId) {
+            movedTask.status = destColumn.columnName;
+        }
+
+        destColumn.Task.splice(destination.index, 0, movedTask);
 
 
+        try {
 
 
-        axiosFetch.put(`/DropDown?ID=${isActive}`, result)
-            .then(res => {
-                if (res.data.modifiedCount > 0) {
-                    playSound();
-                    refetch();
-                }
-                else {
-                    toast.warning("Something worng try again !", {
-                        position: "top-right",
-                        hideProgressBar: true,
-                        autoClose: 1500
-                    })
+            const res = await axiosFetch.put(`/DropDown?ID=${isActive}`, result)
 
-                }
+            if (res.data.modifiedCount > 0) {
+                const audio = new Audio(ding);
+                audio.play();
+                refetch()
 
-            })
-            .catch(() => {
-                toast.warning("Something worng try again !", {
+            } else {
+                toast.warning("Something went wrong, try again!", {
                     position: "top-right",
                     hideProgressBar: true,
-                    autoClose: 1500
-                })
-            })
-
-
-
-
-
+                    autoClose: 1500,
+                });
+                refetch();
+            }
+        } catch (err) {
+            toast.warning("Network error, try again!", {
+                position: "top-right",
+                hideProgressBar: true,
+                autoClose: 1500,
+            });
+            refetch();
+        }
     };
-
 
 
 

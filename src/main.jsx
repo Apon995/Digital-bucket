@@ -35,17 +35,18 @@ const router = createBrowserRouter([
         path: '/Contact',
         element: <Contact />
       },
-      {
-        path: '/Login',
-        element: <Login />
-
-      },
-      {
-        path: '/Register',
-        element: <Register />
-      },
 
     ]
+  },
+
+  {
+    path: '/Login',
+    element: <Login />
+
+  },
+  {
+    path: '/Register',
+    element: <Register />
   },
   {
     path: '/Dashboard',
@@ -59,11 +60,11 @@ const queryclient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById('root')).render(
 
-    <QueryClientProvider client={queryclient}>
-      <AuthProvider>
-        <RouterProvider router={router} />
-      </AuthProvider>
-    </QueryClientProvider>
+  <QueryClientProvider client={queryclient}>
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
+  </QueryClientProvider>
 
 
 

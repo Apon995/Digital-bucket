@@ -6,18 +6,20 @@
 
 /* ---brower-scroll-bar-css-- */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 0px;
+  display: none;
+
 }
 
-::-webkit-scrollbar-thumb {
+/* ::-webkit-scrollbar-thumb {
   background: #635fc7;
   border-radius: 8px;
-}
+} */
 
-::-webkit-scrollbar-thumb:hover {
+/* ::-webkit-scrollbar-thumb:hover {
   cursor: pointer;
   background: #555;
-}
+} */
 
 html {
   scrollbar-width: thin;
@@ -43,7 +45,8 @@ body {
   position: -webkit-sticky;
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 99;
+  
 }
 
 /* ---Banner-css--- */
@@ -74,13 +77,13 @@ body {
 }
 
 /* ---contact-css-- */
-form#contact {
+/* form#contact {
   z-index: 2;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
   padding: 60px 50px;
   border-radius: 20px;
   margin: auto;
-}
+} */
 
 form#contact input,
 textarea {
@@ -88,7 +91,7 @@ textarea {
   height: 46px;
   border-radius: 0px;
   background-color: transparent;
-  border-bottom: 2px solid #9bdbf8;
+  border: 2px solid #9bdbf8;
   border-top: none;
   border-left: none;
   border-right: none;
@@ -97,7 +100,7 @@ textarea {
   font-weight: 300;
   color: #2a2a2a;
   padding: 0px 0px;
-  margin-bottom: 35px;
+  margin-bottom: 25px;
   transition: all 0.7s;
 }
 
@@ -116,7 +119,7 @@ form#contact input::placeholder {
   font-weight: normal;
 }
 
-form#contact button {
+/* form#contact button {
   display: inline-block;
   background-color: #635fc7;
   font-size: 15px;
@@ -129,11 +132,11 @@ form#contact button {
   border: none;
   outline: none;
   transition: all 0.3s;
-}
+} */
 
-form#contact button:hover {
+/* form#contact button:hover {
   background-color: black;
-}
+} */
 
 /* ----Footer-Css--- */
 #socialIcons > div {
