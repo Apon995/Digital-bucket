@@ -14,6 +14,36 @@ import { Navigate, useNavigate } from "react-router-dom";
 
 function About() {
   const navigate = useNavigate();
+  const Team = [
+    {
+      img: "https://i.pinimg.com/736x/85/22/34/8522346c05525356198706df30c7ebe0.jpg",
+      name: "Shofikul islam Parvez",
+      role: "Front end developer",
+      bio: "Crafts intuitive interfaces that make task management effortless",
+      skills: ["React js", "Javscript", "Tailwind css"]
+    },
+    {
+      img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
+      name: "Ashiqul islam Ayon",
+      role: "Full Stack Developer",
+      bio: "Builds robust systems that keep your data secure and accessible",
+      skills: ["Python", "Database Architecture"]
+    },
+    {
+      img: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
+      name: "David warner",
+      role: "Product Manager",
+      bio: "Translates user needs into features that enhance productivity",
+      skills: ["Agile", "Product Strategy", "User Stories"]
+    },
+    {
+      img: "https://upload.wikimedia.org/wikipedia/commons/f/f4/USAFA_Hosts_Elon_Musk_%28Image_1_of_17%29_%28cropped%29.jpg",
+      name: "Elonk musk",
+      role: "Chief Engineer",
+      bio: "Ensures DigitalBucket runs smoothly and scales with your needs",
+      skills: ["physics ", " engineering"]
+    }
+  ]
   return (
     <section className="min-h-screen px-4 md:px-8 lg:px-16 py-12 max-w-6xl mx-auto">
       {/* Hero Section */}
@@ -42,14 +72,14 @@ function About() {
       >
         <div className="lg:w-1/2">
           <div className="bg-gradient-to-br from-[#635fc7] to-[#817cf0] p-1 rounded-2xl shadow-xl">
-            <img 
-              src={Hisorty} 
-              alt="DigitalBucket history" 
+            <img
+              src={Hisorty}
+              alt="DigitalBucket history"
               className="w-full h-auto rounded-2xl"
             />
           </div>
         </div>
-        
+
         <div className="lg:w-1/2">
           <div className="mb-2">
             <span className="text-[#635fc7] font-semibold tracking-wider text-sm uppercase">
@@ -59,27 +89,27 @@ function About() {
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
             Empowering Productivity Through Innovation
           </h2>
-          
+
           <div className="space-y-4 text-gray-700">
             <p>
-              At Digital Bucket, we believe in the transformative power of organization and purposeful task management. 
-              Born from a passion for efficiency and fueled by the relentless pursuit of productivity, we've crafted a 
+              At Digital Bucket, we believe in the transformative power of organization and purposeful task management.
+              Born from a passion for efficiency and fueled by the relentless pursuit of productivity, we've crafted a
               platform designed to turn aspirations into accomplishments.
             </p>
-            
+
             <p>
-              Our mission is simple yet profound: to empower individuals in maximizing their potential by providing a 
-              seamless and intuitive task management experience. We're dedicated to helping you prioritize tasks, set 
+              Our mission is simple yet profound: to empower individuals in maximizing their potential by providing a
+              seamless and intuitive task management experience. We're dedicated to helping you prioritize tasks, set
               achievable goals, and ultimately transform your ambitions into tangible successes.
             </p>
-            
+
             <p>
-              At Digital Bucket, we're committed to continuous innovation. We listen to our users, evolving and improving 
-              our platform to meet the evolving demands of the modern world. Your productivity is our priority, and we 
+              At Digital Bucket, we're committed to continuous innovation. We listen to our users, evolving and improving
+              our platform to meet the evolving demands of the modern world. Your productivity is our priority, and we
               strive to be the catalyst for your success, every step of the way.
             </p>
           </div>
-          
+
           <button className="mt-8 bg-[#635fc7] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#514bbd] transition-colors duration-300">
             Learn More About Our Journey
           </button>
@@ -108,67 +138,92 @@ function About() {
       </motion.div>
 
       {/* Team Section */}
+      {/* Team Section */}
       <motion.div
         initial={{ opacity: 0, y: 100 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7 }}
         viewport={{ once: true }}
-        className="mb-20"
+        className="py-16 px-4 md:px-8 lg:px-16 bg-gradient-to-br from-gray-50 to-white"
       >
-        <div className="text-center mb-12">
-          <span className="text-[#635fc7] font-semibold tracking-wider text-sm uppercase">
-            Creative Minds
-          </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mt-2 mb-4">
-            Meet Our Team
-          </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Talented professionals dedicated to building the best task management experience
-          </p>
-        </div>
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <span className="text-[#635fc7] font-semibold tracking-wider text-sm uppercase">
+              Innovative Minds
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mt-2 mb-4">
+              Meet Our Visionary Team
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Passionate professionals dedicated to revolutionizing your productivity experience
+            </p>
+          </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {[
-            { img: member3, name: "Jassica", role: "Web Developer" },
-            { img: member4, name: "Yuvraj Ashique", role: "Front End Developer" },
-            { img: member1, name: "Taslima Akter", role: "Backend Developer" },
-            { img: member2, name: "Mudassir Abir", role: "DSA Expert" }
-          ].map((member, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
-            >
-              <div className="relative overflow-hidden">
-                <img 
-                  src={member.img} 
-                  alt={member.name} 
-                  className="w-full h-64 object-cover transition-transform duration-500 hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                  <div className="flex space-x-3">
-                    {["facebook", "twitter", "instagram", "linkedin"].map((platform) => (
-                      <a 
-                        key={platform}
-                        href="#" 
-                        className="bg-white rounded-full p-2 hover:bg-[#635fc7] hover:text-white transition-colors duration-300"
-                      >
-                        <i className={`fa fa-${platform}`}></i>
-                      </a>
-                    ))}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {
+
+              Team?.map((member, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 group"
+                >
+                  <div className="relative overflow-hidden">
+                    <img
+                      src={member.img}
+                      alt={member.name}
+                      className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                      <div className="text-white">
+                        <p className="text-sm mb-2">{member.bio}</p>
+                        <div className="flex flex-wrap gap-1 mt-2">
+                          {member.skills.map((skill, i) => (
+                            <span key={i} className="bg-[#635fc7]/80 text-xs px-2 py-1 rounded">
+                              {skill}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-              
-              <div className="p-6 text-center">
-                <h3 className="text-xl font-semibold text-gray-900 mb-1">{member.name}</h3>
-                <p className="text-[#635fc7] font-medium">{member.role}</p>
-              </div>
-            </motion.div>
-          ))}
+
+                  <div className="p-6 text-center">
+                    <h3 className="text-xl font-semibold text-gray-900 mb-1">{member.name}</h3>
+                    <p className="text-[#635fc7] font-medium mb-3">{member.role}</p>
+
+                    <div className="flex justify-center space-x-3 mt-4">
+                      {["facebook", "twitter", "linkedin"].map((platform) => (
+                        <a
+                          key={platform}
+                          href="#"
+                          className="bg-gray-100 rounded-full p-2 hover:bg-[#635fc7] hover:text-white transition-colors duration-300"
+                        >
+                          <i className={`fa-brands fa-${platform}`}></i>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+          </div>
+
+          {/* Call to Action */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.4 }}
+            viewport={{ once: true }}
+            className="text-center mt-16"
+          >
+            <p className="text-gray-600 mb-6">Want to join our innovative team?</p>
+            <button className="bg-[#635fc7] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#514bbd] transition-colors duration-300">
+              View Open Positions
+            </button>
+          </motion.div>
         </div>
       </motion.div>
 
@@ -294,7 +349,7 @@ function About() {
         <p className="mb-6 max-w-2xl mx-auto opacity-90">
           Join thousands of users who are already transforming their workflow with DigitalBucket
         </p>
-        <button onClick={()=> navigate('/Dashboard')} className="bg-white text-[#635fc7] px-8 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors duration-300">
+        <button onClick={() => navigate('/Dashboard')} className="bg-white text-[#635fc7] px-8 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors duration-300">
           Get Started Free
         </button>
       </motion.div>
