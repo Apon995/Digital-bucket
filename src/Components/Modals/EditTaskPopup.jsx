@@ -1,6 +1,5 @@
-import React from "react";
 
-function EditTaskpopup({ setEditTask, setEdit, setTypeEdit }) {
+export default function EditTaskpopup({ setEditTask, setEdit, setTypeEdit }) {
   return (
     <>
       <>
@@ -52,4 +51,3 @@ function EditTaskpopup({ setEditTask, setEdit, setTypeEdit }) {
   );
 }
 
-export default EditTaskpopup;

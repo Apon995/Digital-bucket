@@ -23,7 +23,7 @@ function ShowTaskDetails({ isActive, setShowDetails, Rcvobj, refetch, setEditTas
     const playSound = () => {
         const audio = new Audio(ding);
         audio.play();
-      };
+    };
 
 
 
@@ -53,18 +53,24 @@ function ShowTaskDetails({ isActive, setShowDetails, Rcvobj, refetch, setEditTas
 
         Swal.fire({
             title: "Delete this Todo ?",
-            text: `are you sure delete ${title} todo ?`,
+            text: `Are you sure delete ${title} todo ?`,
             icon: "question",
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Delete"
+            customClass: {
+                confirmButton: 'bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2',
+                cancelButton: 'bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
+            },
+
+
+            confirmButtonText: "Delete it",
+
+
+
         }).then((result) => {
             if (result.isConfirmed) {
 
                 axiosFetch.delete(`/DeleteTask?ID=${isActive}&TaskId=${TaskId}&columnId=${columnId}`)
                     .then(res => {
-                        console.log(res.data)
                         if (res.data.modifiedCount == 1) {
                             Swal.fire({
                                 title: "Deleted Task",
