@@ -123,30 +123,35 @@ function AddEditTask({
     };
 
     return (
+      
         <>
-            {typeEdit == "edit" ? (
+            {typeEdit === "edit" ? (
                 <div
-                    className=" py-6 px-6 pb-40  absolute overflow-y-scroll  left-0 flex  right-0 bottom-0 top-0 dropdown "
+                    className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
                     onClick={(e) => {
-                        if (e.target !== e.currentTarget) {
-                            return;
+                        if (e.target === e.currentTarget) {
+                            setEdit(false);
                         }
-                        setEdit(false);
                     }}
                 >
-                    {/* Edit Modal Section */}
+                    {/* Edit Modal */}
+                    <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+                        <div className="p-6 border-b border-gray-200">
+                            <div className="flex items-center justify-between">
+                                <h3 className="text-xl font-semibold text-gray-900">Edit Task</h3>
+                                <button
+                                    onClick={() => setEdit(false)}
+                                    className="text-gray-400 hover:text-gray-600"
+                                >
+                                    <i className="fa-solid fa-xmark text-lg"></i>
+                                </button>
+                            </div>
+                        </div>
 
-                    <div
-                        className=" scrollbar-hide overflow-y-scroll max-h-[95vh]  my-auto  bg-white dark:bg-white text-black dark:text-black font-bold
-                             shadow-lg shadow-[#364e7e1a] max-w-md mx-auto  w-full md:px-8 px-4  py-8 rounded-xl"
-                    >
-                        <h3 className="text-lg text-black font-semibold ">Task</h3>
-
-                        {/* Task Name */}
-
-                        <form onSubmit={HandleUpdate}>
-                            <div className="mt-8 flex flex-col space-y-1">
-                                <label className="  text-sm dark:text-black text-black font-normal">
+                        <form onSubmit={HandleUpdate} className="p-6 space-y-6">
+                            {/* Task Name */}
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium text-gray-700">
                                     Task Name
                                 </label>
                                 <input
@@ -156,14 +161,14 @@ function AddEditTask({
                                     defaultValue={title}
                                     autoComplete="off"
                                     required
-                                    className=" bg-transparent  md:px-4 py-2 outline-none  rounded-md text-sm  border-[2px] border-gray-600 focus:border-[#635fc7] "
-                                    placeholder=" e.g Take coffee break"
+                                    className="w-full px-4 py-3 border-2 focus:border-gray-500 outline-none rounded-lg  transition-all duration-300"
+                                    placeholder="e.g. Take coffee break"
                                 />
                             </div>
 
                             {/* Description */}
-                            <div className="mt-8 flex flex-col space-y-1">
-                                <label className="  text-sm dark:text-black  text-black">
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium text-gray-700">
                                     Description
                                 </label>
                                 <textarea
@@ -171,106 +176,123 @@ function AddEditTask({
                                     name="description"
                                     defaultValue={description}
                                     autoComplete="off"
-                                    className=" bg-[#f4f7fd] min-h-[100px]  px-4 py-2 rounded-md text-sm  border-2 border-gray-600  focus:border-[#635fc7] placeholder:text-gray-600 font-medium text-black"
+                                    rows={4}
+                                    className="w-full px-4 py-3 border-2 focus:border-gray-500 outline-none rounded-lg  transition-all duration-300 resize-none"
+                                    placeholder="Describe your task..."
                                 />
                             </div>
-                            {/* current Status  */}
-                            <div className=" mt-2 flex flex-col space-y-3">
-                                <label className="  text-sm dark:text-black text-black">
-                                    current status
-                                </label>
 
-                                <div className=" select-status flex-grow px-4 py-2 rounded-md text-sm border-[2px] outline-none border-gray-600 focus:border-[#635fc7] ">
-                                    <h1>{columnName}</h1>
+                            {/* Current Status */}
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium text-gray-700">
+                                    Current Status
+                                </label>
+                                <div className="px-4 py-3 border border-gray-300 rounded-lg bg-gray-50">
+                                    <span className="text-gray-700 font-medium">{columnName}</span>
                                 </div>
                             </div>
 
-                            <div className="mt-4 ">
-                                <button className=" w-full items-center text-white bg-[#635fc7] py-2 rounded-full ">
-                                    confirm edit
+                            <div className="pt-4">
+                                <button
+                                    type="submit"
+                                    className="w-full bg-gradient-to-r from-[#635fc7] to-[#817cf0] text-white py-3 rounded-lg font-medium hover:opacity-90 transition-all duration-300 shadow-md"
+                                >
+                                    Confirm Edit
                                 </button>
                             </div>
                         </form>
                     </div>
                 </div>
-            ) :
-                (
-                    <div
-                        className=" py-6 px-6 pb-40  absolute overflow-y-scroll  left-0 flex  right-0 bottom-0 top-0 dropdown "
-                        onClick={(e) => {
-                            if (e.target !== e.currentTarget) {
-                                return;
-                            }
+            ) : (
+                <div
+                    className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+                    onClick={(e) => {
+                        if (e.target === e.currentTarget) {
                             setShowTaskModal(false);
-                        }}
-                    >
-                        {/* Modal Section */}
-
-                        <div
-                            className=" scrollbar-hide overflow-y-scroll max-h-[95vh]  my-auto  bg-white dark:bg-white text-black dark:text-black font-bold
-       shadow-lg shadow-[#364e7e1a] max-w-md mx-auto  w-full md:px-8 px-4  py-8 rounded-xl"
-                        >
-                            <h3 className="text-lg text-black font-semibold ">Task</h3>
-
-                            {/* Task Name */}
-
-                            <form onSubmit={HandleSubmit}>
-                                <div className="mt-8 flex flex-col space-y-1">
-                                    <label className="  text-sm dark:text-black text-black font-normal">
-                                        Task Name
-                                    </label>
-                                    <input
-                                        id="Task"
-                                        name="Task"
-                                        type="text"
-                                        autoComplete="off"
-                                        required
-                                        className=" bg-transparent  px-4 py-2 outline-none  rounded-md text-sm  border-[2px] border-gray-600 focus:border-[#635fc7] "
-                                        placeholder=" e.g Take coffee break"
-                                    />
-                                </div>
-
-                                {/* Description */}
-                                <div className="mt-8 flex flex-col space-y-1">
-                                    <label className="  text-sm dark:text-black  text-black">
-                                        Description
-                                    </label>
-                                    <textarea
-                                        id="description"
-                                        name="description"
-                                        autoComplete="off"
-                                        className=" bg-[#f4f7fd] min-h-[100px]  md:px-4 py-2 rounded-md text-sm  border-2 border-gray-600  focus:border-[#635fc7] placeholder:text-gray-600 font-medium text-black"
-                                        placeholder="e.g. It's always good to take a break. This 15 minute break will  recharge the batteries a little."
-                                    />
-                                </div>
-                                {/* current Status  */}
-                                <div className="mt-8 mb-3 flex flex-col space-y-3">
-                                    <label className="  text-sm dark:text-black text-black">
-                                        Current Status
-                                    </label>
-
-                                    <select
-                                        name="status"
-                                        id="status"
-                                        className=" select-status flex-grow px-4 text-black py-2 rounded-md text-sm border-[2px] outline-none border-gray-600 focus:border-[#635fc7] "
-                                    >
-                                        {data?.Columns?.map((element, index) => (
-                                            <option key={index} value={element?.columnName}>
-                                                {element?.columnName}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    <button className=" w-full items-center text-white bg-[#635fc7] py-2 rounded-full ">
-                                        Create New Task
-                                    </button>
-                                </div>
-                            </form>
+                        }
+                    }}
+                >
+                    {/* Add Task Modal */}
+                    <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+                        <div className="p-6 border-b border-gray-200">
+                            <div className="flex items-center justify-between">
+                                <h3 className="text-xl font-semibold text-gray-900">Add New Task</h3>
+                                <button
+                                    onClick={() => setShowTaskModal(false)}
+                                    className="text-gray-400 hover:text-gray-600"
+                                >
+                                    <i className="fa-solid fa-xmark text-lg"></i>
+                                </button>
+                            </div>
                         </div>
+
+                        <form onSubmit={HandleSubmit} className="p-6 space-y-6">
+                            {/* Task Name */}
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium text-gray-700">
+                                    Task Name
+                                </label>
+                                <input
+                                    id="Task"
+                                    name="Task"
+                                    type="text"
+                                    autoComplete="off"
+                                    required
+                                    className="w-full px-4 py-3 border-2 focus:border-gray-500 outline-none rounded-lg transition-all duration-300"
+                                    placeholder="e.g. Take coffee break"
+                                />
+                            </div>
+
+                            {/* Description */}
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium text-gray-700">
+                                    Description
+                                </label>
+                                <textarea
+                                    id="description"
+                                    name="description"
+                                    autoComplete="off"
+                                    rows={4}
+                                    className="w-full px-4 py-3 rounded-lg border-2 focus:border-gray-500 outline-none transition-all duration-300 resize-none"
+                                    placeholder="e.g. It's always good to take a break. This 15 minute break will recharge the batteries a little."
+                                />
+                            </div>
+
+                            {/* Status Selection */}
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium text-gray-700">
+                                    Current Status
+                                </label>
+                                <select
+                                    name="status"
+                                    id="status"
+                                    className="w-full px-4 py-3 border-2 focus:border-gray-500 outline-none rounded-lg transition-all duration-300 appearance-none bg-white"
+                                >
+                                    {data?.Columns?.map((element, index) => (
+                                        <option key={index} value={element?.columnName}>
+                                            {element?.columnName}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            <div className="pt-4">
+                                <button
+                                    type="submit"
+                                    className="w-full bg-gradient-to-r from-[#635fc7] to-[#817cf0] text-white py-3 rounded-lg font-medium hover:opacity-90 transition-all duration-300 shadow-md"
+                                >
+                                    Create New Task
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                )}
+                </div>
+            )}
 
             <ToastContainer />
         </>
+
+
     );
 }
 

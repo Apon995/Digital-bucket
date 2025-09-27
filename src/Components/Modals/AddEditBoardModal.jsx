@@ -14,6 +14,7 @@ function AddEditBoardModal({ setShowBoardModal, refetch, Type, isActive }) {
     const axiosFetch = useFetch();
     const { user } = useAuth();
     const [data, setData] = useState();
+    const [currentData, setcurrentData] = useState();
 
     useEffect(() => {
 
@@ -21,6 +22,8 @@ function AddEditBoardModal({ setShowBoardModal, refetch, Type, isActive }) {
             axiosFetch.get(`/Todo?ID=${isActive}`)
                 .then((res) => {
                     setData(res?.data)
+                    setcurrentData(res?.data);
+
                 })
                 .catch(error => {
                     console.log(error);
@@ -31,6 +34,9 @@ function AddEditBoardModal({ setShowBoardModal, refetch, Type, isActive }) {
 
     }, [Type == 'edit'])
 
+
+
+
     const HandleBoardSubmit = (e) => {
         e.preventDefault();
 
@@ -39,7 +45,6 @@ function AddEditBoardModal({ setShowBoardModal, refetch, Type, isActive }) {
 
         const obj = {
             "user": user?.email || "anynomous",
-            "BoardName": board.get('BoardName').trim().replace(/\s+/g, ' '),
             "firstColumn": board.get('FirstColumn').trim().replace(/\s+/g, ' '),
             "secondColumn": board.get('SecondColumn').trim().replace(/\s+/g, ' '),
             "thirdColumn": board.get('ThirdColumn').trim().replace(/\s+/g, ' '),
@@ -77,39 +82,37 @@ function AddEditBoardModal({ setShowBoardModal, refetch, Type, isActive }) {
 
 
 
+
     const HandleEdit = (e) => {
 
         e.preventDefault();
 
-        const board = new FormData(e.currentTarget);
+        const compareColumn = JSON.stringify(
+            data?.Columns.map(c => ({ id: c.id, columnName: c.columnName }))
+        ) === JSON.stringify(
+            currentData?.Columns.map(c => ({ id: c.id, columnName: c.columnName }))
+        )
 
 
-        const obj = {
-            "BoardName": board.get('BoardName').trim().replace(/\s+/g, ' '),
-            "Columns": [
-                {
-                    'id': 1,
-                    "columnName": board.get('FirstColumn').trim().replace(/\s+/g, ' '),
-                },
-                {
-                    'id': 2,
-                    "columnName": board.get('SecondColumn').trim().replace(/\s+/g, ' '),
-                },
-                {
-                    'id': 3,
-                    "columnName": board.get('ThirdColumn').trim().replace(/\s+/g, ' ')
-                }
+        const compareBoard = data.BoardName.trim().replace(/\s+/g, ' ') === currentData.BoardName.trim().replace(/\s+/g, ' ')
 
-            ],
+        if (compareBoard && compareColumn ) {
+               Swal.fire({
+                        title: "Modified",
+                        text: "Successfully Modified Board !",
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 1500,
 
+                    });
+
+                     setShowBoardModal(false)
+
+                     return;
         }
 
-
-
-
-        axiosFetch.put(`/UpdateBoard?ID=${isActive}`, obj)
+        axiosFetch.put(`/UpdateBoard?ID=${isActive}`, data)
             .then(res => {
-
                 if (res?.data?.modifiedCount == 1) {
                     Swal.fire({
                         title: "Modified",
@@ -137,213 +140,253 @@ function AddEditBoardModal({ setShowBoardModal, refetch, Type, isActive }) {
     }
 
 
+    const HandleBoardChange = (e) => {
+  
+        setData((pre) => ({ ...pre, BoardName: e.target?.value?.trim().replace(/\s+/g, "") }))
+    }
+
+
+
+    const HandleColumnChange = (index, value) => {
+        setData((prev) => {
+            const updatedColumns = [...prev?.Columns];
+            updatedColumns[index] = {
+                ...updatedColumns[index],
+                columnName: value?.trim().replace(/\s+/g, " "),
+            };
+
+            return { ...prev, Columns: updatedColumns };
+        });
+    };
+
+
+
+
+
+
     return (
+
+
+
         <>
+            {Type === 'new' ? (
+                // Create New Board Modal
+                <div
+                    className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+                    onClick={(e) => {
+                        if (e.target === e.currentTarget) {
+                            setShowBoardModal(false);
+                        }
+                    }}
+                >
+                    <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+                        <div className="p-6 border-b border-gray-200">
+                            <div className="flex items-center justify-between">
+                                <h3 className="text-xl font-semibold text-gray-900">Create New Board</h3>
+                                <button
+                                    onClick={() => setShowBoardModal(false)}
+                                    className="text-gray-400 hover:text-gray-600"
+                                >
+                                    <i className="fa-solid fa-xmark text-lg"></i>
+                                </button>
+                            </div>
+                        </div>
 
-            {
-                Type == 'new' ?
-                    // ----if--type--is--new--
-                    <div
-                        className="  fixed right-0 top-0 px-2 py-4 overflow-scroll scrollbar-hide  z-50 left-0 bottom-0 justify-center items-center flex dropdown "
+                        <form onSubmit={HandleBoardSubmit} className="p-6 space-y-6">
+                            {/* Board Name */}
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium text-gray-700">
+                                    Board Name
+                                </label>
+                                <input
+                                    type="text"
+                                    name="BoardName"
+                                    id="BoardName"
+                                    autoComplete="off"
+                                    required
+                                    className="w-full px-4 py-3 border-2 focus:border-gray-500 outline-none rounded-lg  transition-all duration-300"
+                                    placeholder="e.g. Web Design"
+                                />
+                            </div>
 
-                        onClick={(e) => {
-                            if (e.target !== e.currentTarget) {
+                            {/* Board Columns */}
+                            <div className="space-y-4">
+                                <label className="text-sm font-medium text-gray-700">
+                                    Board Columns
+                                </label>
 
-                                return
-                            }
-                            setShowBoardModal(false)
-                        }}
-
-                    >
-                        <div
-                            className=" scrollbar-hide overflow-y-scroll max-h-[95vh] shadow-lg  bg-white dark:bg-white  text-black dark:text-black font-bold
-                      shadow-[#364e7e1a] max-w-md mx-auto my-auto w-full px-8  py-8 rounded-xl"
-                        >
-                            <h3 className=" text-lg ">
-                                Board
-                            </h3>
-
-                            {/* Task Name */}
-
-                            <form onSubmit={HandleBoardSubmit}>
-                                <div className="mt-4 flex flex-col space-y-1">
-                                    <label className="  text-sm dark:text-black text-black">
-                                        Board Name
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="BoardName"
-                                        id="BoardName"
-                                        autoComplete="off"
-                                        required
-                                        className=" bg-transparent  px-4 py-2 rounded-md text-sm border-[2px] outline-none border-gray-600 focus:border-[#635fc7] "
-                                        placeholder=" e.g Web Design"
-                                    />
-                                </div>
-
-                                {/* Board Columns */}
-
-                                <div className="mt-8 flex flex-col space-y-3">
-                                    <label className=" text-sm dark:text-black text-black">
-                                        Board Columns
-                                    </label>
-
-                                    <div className=" flex flex-col gap-2 items-center w-full ">
+                                <div className="space-y-3">
+                                    <div className="flex items-center gap-3">
                                         <input
                                             required
-                                            className=" w-full bg-transparent flex-grow px-4 py-2 rounded-md text-sm outline-none border-[2px] border-gray-600 focus:border-[#635fc7]"
+                                            className="w-full px-4 py-3 border-2 focus:border-gray-500 outline-none rounded-lg  transition-all duration-300"
                                             type="text"
                                             autoComplete="off"
                                             name="FirstColumn"
                                             id="FirstColumn"
-                                            placeholder="example Todo"
+                                            placeholder="e.g. Todo"
                                         />
+                                        {/* <button
+                                            type="button"
+                                            className="text-gray-400 hover:text-gray-600 p-2"
+                                            title="Remove column"
+                                        >
+                                            <i className="fa-solid fa-xmark"></i>
+                                        </button> */}
+                                    </div>
+
+                                    <div className="flex items-center gap-3">
                                         <input
                                             required
-                                            className=" w-full bg-transparent flex-grow px-4 py-2 rounded-md text-sm outline-none border-[2px] border-gray-600 focus:border-[#635fc7]"
+                                            className="w-full px-4 py-3 border-2 focus:border-gray-500 outline-none rounded-lg  transition-all duration-300"
                                             type="text"
                                             name="SecondColumn"
                                             autoComplete="off"
                                             id="SecondColumn"
-                                            placeholder="example Doing"
+                                            placeholder="e.g. Doing"
                                         />
+                                        {/* <button
+                                            type="button"
+                                            className="text-gray-400 hover:text-gray-600 p-2"
+                                            title="Remove column"
+                                        >
+                                            <i className="fa-solid fa-xmark"></i>
+                                        </button> */}
+                                    </div>
+
+                                    <div className="flex items-center gap-3">
                                         <input
                                             required
-                                            className=" w-full bg-transparent flex-grow px-4 py-2 rounded-md text-sm outline-none border-[2px] border-gray-600 focus:border-[#635fc7]"
+                                            className="w-full px-4 py-3 border-2 focus:border-gray-500 outline-none rounded-lg  transition-all duration-300"
                                             type="text"
                                             name="ThirdColumn"
                                             autoComplete="off"
                                             id="ThirdColumn"
-                                            placeholder="example Done"
+                                            placeholder="e.g. Done"
                                         />
-
-                                    </div>
-
-                                </div>
-
-                                <div>
-
-                                    <div className="mt-3">
-                                        <button className=" w-full active:bg-black items-center hover:opacity-85 dark:text-white dark:bg-[#635fc7] mt-8 relative  text-white bg-[#635fc7] py-2 rounded-full"
+                                        {/* <button
+                                            type="button"
+                                            className="text-gray-400 hover:text-gray-600 p-2"
+                                            title="Remove column"
                                         >
-                                            Add now
-                                        </button>
+                                            <i className="fa-solid fa-xmark"></i>
+                                        </button> */}
                                     </div>
                                 </div>
 
+                                {/* Add New Column Button */}
+                                {/* <button
+                                    type="button"
+                                    className="w-full py-3 bg-gray-100 text-[#635fc7] rounded-lg font-medium hover:bg-gray-200 transition-all duration-300 flex items-center justify-center gap-2"
+                                >
+                                    <i className="fa-solid fa-plus"></i>
+                                    Add New Column
+                                </button> */}
+                            </div>
 
-
-                            </form>
-
-
-                        </div>
-                    </div> :
-
-                    // ---if--type--is--edit--
-                    <div
-                        className="  fixed right-0 top-0 px-2 py-4 overflow-scroll scrollbar-hide  z-50 left-0 bottom-0 justify-center items-center flex dropdown "
-
-                        onClick={(e) => {
-                            if (e.target !== e.currentTarget) {
-
-                                return
-                            }
-                            setShowBoardModal(false)
-                        }}
-
-                    >
-                        <div
-                            className=" scrollbar-hide overflow-y-scroll max-h-[95vh] shadow-lg  bg-white dark:bg-white  text-black dark:text-black font-bold
-                      shadow-[#364e7e1a] max-w-md mx-auto my-auto w-full px-8  py-8 rounded-xl"
-                        >
-                            <h3 className=" text-lg ">
-                                Board
-                            </h3>
-
-                            {/* Task Name */}
-
-                            <form onSubmit={HandleEdit}>
-                                <div className="mt-4 flex flex-col space-y-1">
-                                    <label className="  text-sm dark:text-black text-black">
-                                        Board Name
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="BoardName"
-                                        id="BoardName"
-                                        required
-                                        className=" bg-transparent  px-4 py-2 rounded-md text-sm border-[2px] outline-none border-gray-600 focus:border-[#635fc7] "
-                                        placeholder=" e.g Web Design"
-                                        defaultValue={data?.BoardName}
-                                    />
-                                </div>
-
-                                {/* Board Columns */}
-
-                                <div className="mt-8 flex flex-col space-y-3">
-                                    <label className=" text-sm dark:text-black text-black">
-                                        Board Columns
-                                    </label>
-
-                                    <div className=" flex flex-col gap-2 items-center w-full ">
-                                        <input
-                                            required
-                                            className=" w-full bg-transparent flex-grow px-4 py-2 rounded-md text-sm outline-none border-[2px] border-gray-600 focus:border-[#635fc7]"
-                                            type="text"
-                                            name="FirstColumn"
-                                            id="FirstColumn"
-                                            placeholder="example Todo"
-                                            defaultValue={data?.Columns[0]?.columnName}
-                                        />
-                                        <input
-                                            required
-                                            className=" w-full bg-transparent flex-grow px-4 py-2 rounded-md text-sm outline-none border-[2px] border-gray-600 focus:border-[#635fc7]"
-                                            type="text"
-                                            name="SecondColumn"
-                                            id="SecondColumn"
-                                            placeholder="example Doing"
-                                            defaultValue={data?.Columns[1]?.columnName}
-                                        />
-                                        <input
-                                            required
-                                            className=" w-full bg-transparent flex-grow px-4 py-2 rounded-md text-sm outline-none border-[2px] border-gray-600 focus:border-[#635fc7]"
-                                            type="text"
-                                            name="ThirdColumn"
-                                            id="ThirdColumn"
-                                            placeholder="example Done"
-                                            defaultValue={data?.Columns[2]?.columnName}
-                                        />
-
-                                    </div>
-
-                                </div>
-
-                                <div>
-
-                                    <div className="mt-3">
-                                        <button className=" w-full active:bg-black items-center hover:opacity-85 dark:text-white dark:bg-[#635fc7] mt-8 relative  text-white bg-[#635fc7] py-2 rounded-full"
-                                        >
-                                            confirm edit
-                                        </button>
-                                    </div>
-                                </div>
-
-
-
-                            </form>
-
-
-                        </div>
+                            <div className="pt-4">
+                                <button
+                                    type="submit"
+                                    className="w-full bg-gradient-to-r from-[#635fc7] to-[#817cf0] text-white py-3 rounded-lg font-medium hover:opacity-90 transition-all duration-300 shadow-md"
+                                >
+                                    Create New Board
+                                </button>
+                            </div>
+                        </form>
                     </div>
-            }
+                </div>
+            ) : (
+                // Edit Board Modal
+                <div
+                    className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+                    onClick={(e) => {
+                        if (e.target === e.currentTarget) {
+                            setShowBoardModal(false);
+                        }
+                    }}
+                >
+                    <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+                        <div className="p-6 border-b border-gray-200">
+                            <div className="flex items-center justify-between">
+                                <h3 className="text-xl font-semibold text-gray-900">Edit Board</h3>
+                                <button
+                                    onClick={() => setShowBoardModal(false)}
+                                    className="text-gray-400 hover:text-gray-600"
+                                >
+                                    <i className="fa-solid fa-xmark text-lg"></i>
+                                </button>
+                            </div>
+                        </div>
 
+                        <form onSubmit={HandleEdit} className="p-6 space-y-6">
+                            {/* Board Name */}
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium text-gray-700">
+                                    Board Name
+                                </label>
+                                <input
+                                    type="text"
+                                    name="BoardName"
+                                    id="BoardName"
+                                    required
+                                    className="w-full px-4 py-3 border-2 focus:border-gray-500 outline-none rounded-lg  transition-all duration-300"
+                                    placeholder="e.g. Web Design"
+                                    defaultValue={data?.BoardName}
+                                    onChange={HandleBoardChange}
+                                />
+                            </div>
 
+                            {/* Board Columns */}
+                            <div className="space-y-4">
+                                <label className="text-sm font-medium text-gray-700">
+                                    Board Columns
+                                </label>
 
+                                <div className="space-y-3">
+                                    {data?.Columns?.map((column, index) => (
+                                        <div key={index} className="flex items-center gap-3">
+                                            <input
+                                                required
+                                                className="w-full px-4 py-3 border-2 focus:border-gray-500 outline-none rounded-lg  transition-all duration-300"
+                                                type="text"
+                                                name={`column${index + 1}`}
+                                                defaultValue={column?.columnName}
+                                                placeholder={`Column ${index + 1}`}
+                                                onChange={(e) => HandleColumnChange(index, e.target?.value)}
+                                            />
+                                            {/* <button
+                                                type="button"
+                                                className="text-gray-400 hover:text-gray-600 p-2"
+                                                title="Remove column"
+                                            >
+                                                <i className="fa-solid fa-xmark"></i>
+                                            </button> */}
+                                        </div>
+                                    ))}
+                                </div>
 
+                                {/* Add New Column Button */}
+                                {/* <button
+                                    type="button"
+                                    className="w-full py-3 bg-gray-100 text-[#635fc7] rounded-lg font-medium hover:bg-gray-200 transition-all duration-300 flex items-center justify-center gap-2"
+                                >
+                                    <i className="fa-solid fa-plus"></i>
+                                    Add New Column
+                                </button> */}
+                            </div>
 
-
-
-
+                            <div className="pt-4">
+                                <button
+                                    type="submit"
+                                    className="w-full bg-gradient-to-r from-[#635fc7] to-[#817cf0] text-white py-3 rounded-lg font-medium hover:opacity-90 transition-all duration-300 shadow-md"
+                                >
+                                    Save Changes
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
 
             <ToastContainer />
         </>

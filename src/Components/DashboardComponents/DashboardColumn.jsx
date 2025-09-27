@@ -13,7 +13,7 @@ import ding from '../../assets/sounds/ding.mp3'
 
 
 
-function DashboardColumn({ isActive, Datas, ShowTaskModal }) {
+export default function DashboardColumn({ isActive, Datas, ShowTaskModal }) {
     const axiosFetch = useFetch();
 
     const [ShowDetails, setShowDetails] = useState(false);
@@ -104,82 +104,139 @@ function DashboardColumn({ isActive, Datas, ShowTaskModal }) {
     };
 
 
+    if (error) {
+        return (
+            <div className='flex items-center justify-center min-h-[60vh]'>
+                <div className='text-center text-xl font-medium text-red-600 p-4 bg-red-50 rounded-lg'>
+                    <i className="fa-solid fa-triangle-exclamation text-2xl mb-2"></i>
+                    <p>Something went wrong! Please try again.</p>
+                    <button
+                        onClick={() => refetch()}
+                        className="mt-3 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+                    >
+                        Retry
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
+    if (isPending) {
+        return <Loading />;
+    }
+
+
+       const columnColors = {
+        1: "bg-red-500",
+        2: "bg-green-500",
+        3: "bg-blue-500",
+        4: "bg-yellow-500",
+        5: "bg-purple-500"
+    };
+
 
     return (
         <>
 
 
             {
-                error ? <div className='text-center min-h-[60vh] flex items-center justify-center text-xl font-medium text-red-600'>Something Wrong ! try again ?</div> : isPending ? <Loading /> :
-                    <DragDropContext onDragEnd={HandleDragAndDrop}>
-                        <div className="flex flex-wrap justify-between min-h-screen">
 
-                            {
-                                data?.Columns?.map((element) => (
+                <DragDropContext onDragEnd={HandleDragAndDrop}>
+                    <div className="flex flex-wrap xl:justify-between gap-5 justify-center min-h-screen">
 
+                        {
+                            data?.Columns?.map((element) => (
+                                 <div 
+                                key={element?.id} 
+                                className="w-80 bg-gray-50 rounded-lg shadow-sm p-4 flex flex-col h-full"
+                            >
+                                <div className="font-semibold flex items-center gap-3 mb-4 px-2">
+                                    <span
+                                        className={`rounded-full w-4 h-4 flex-shrink-0 ${columnColors[element.id] || "bg-gray-400"}`}
+                                    ></span>
+                                    <span className="text-gray-700 truncate">{element?.columnName}</span>
+                                    <span className="ml-auto bg-gray-200 text-gray-600 text-xs font-medium px-2 py-1 rounded-full">
+                                        {element?.Task?.length}
+                                    </span>
+                                </div>
 
-                                    <div key={element?.id} className="md:min-w-[350px] w-[290px] py-2 px-1 rounded-md">
-                                        <div className=" font-semibold flex items-center  gap-2 tracking-widest md:tracking-[.2em] text-[#828fa3]">
-                                            <span
-                                                className={`rounded-full w-4 h-4 ${element?.id == 3 && "bg-blue-500"
-                                                    } ${element?.id == 2 && "bg-green-500"}  ${element?.id == 1 && "bg-red-500"
-                                                    }   `}
-                                            ></span>
-                                            {element?.columnName} ({element?.Task?.length})
+                                <Droppable 
+                                    droppableId={`${element.id}-${element.columnName}`} 
+                                    key={element.id} 
+                                    type="Task"
+                                >
+                                    {(provided, snapshot) => (
+                                        <div
+                                            {...provided.droppableProps}
+                                            ref={provided.innerRef}
+                                            className={`flex flex-col gap-3 flex-grow min-h-64 rounded-lg transition-colors ${
+                                                snapshot.isDraggingOver ? "bg-blue-50" : "bg-transparent"
+                                            }`}
+                                        >
+                                            {element?.Task?.map((task, index) => (
+                                                <Draggable 
+                                                    key={task._id} 
+                                                    draggableId={task._id} 
+                                                    index={index}
+                                                >
+                                                    {(provided, snapshot) => (
+                                                        <div
+                                                            ref={provided.innerRef}
+                                                            {...provided.draggableProps}
+                                                            {...provided.dragHandleProps}
+                                                            className={`bg-white rounded-lg shadow-sm border border-gray-200 p-4 cursor-grab transition-all transform ${
+                                                                snapshot.isDragging 
+                                                                    ? "rotate-3 shadow-lg" 
+                                                                    : "hover:shadow-md hover:-translate-y-0.5"
+                                                            }`}
+                                                            onClick={() => {
+                                                                setShowDetails(true);
+                                                                setRcvObj({
+                                                                    'TaskId': task._id,
+                                                                    'columnId': element?.id,
+                                                                    'columnName': element?.columnName,
+                                                                    'title': task?.title,
+                                                                    'status': task?.status,
+                                                                    'description': task?.description
+                                                                });
+                                                            }}
+                                                        >
+                                                            <h3 className="font-semibold text-gray-800 mb-2 line-clamp-2">
+                                                                {task?.title}
+                                                            </h3>
+                                                           
+                                                                <span className="text-xs font-medium px-2 py-1 bg-gray-100 text-gray-600 rounded">
+                                                                    {task?.status}
+                                                                </span>
+                                                      
+                                                        </div>
+                                                    )}
+                                                </Draggable>
+                                            ))}
+                                            {provided.placeholder}
+                                            
+                                            {element?.Task?.length === 0 && (
+                                                <div className="flex flex-col items-center justify-center h-64 text-gray-400 border-2 border-dashed border-gray-300 rounded-lg p-4">
+                                                    <i className="fa-regular fa-folder-open text-3xl mb-2"></i>
+                                                    <p className="text-sm">No tasks in this column</p>
+                                                </div>
+                                            )}
                                         </div>
-
-                                        <Droppable droppableId={`${element.id}-${element.columnName}`} key={element.id} type="Task" >
-                                            {
-                                                (provided) => (
-                                                    <div {...provided.droppableProps} ref={provided.innerRef} className="flex flex-col gap-4 mt-4">
-                                                        {element?.Task?.map((a, index) => (
-                                                            <Draggable key={index} draggableId={`${a._id}`} index={index}>
-                                                                {
-                                                                    (provided) => (
-                                                                        <div draggable
-                                                                            {...provided.draggableProps}
-                                                                            {...provided.dragHandleProps}
-                                                                            ref={provided.innerRef}
-                                                                            onClick={() => {
-                                                                                setShowDetails(!ShowDetails);
-                                                                                setRcvObj({
-                                                                                    'TaskId': a._id,
-                                                                                    'columnId': element?.id,
-                                                                                    'columnName': element?.columnName,
-                                                                                    'title': a?.title,
-                                                                                    'status': a?.status,
-                                                                                    'description': a?.description
-                                                                                });
-                                                                            }}
-                                                                            className="flex-1 drop-shadow-xl  bg-white max-w-[320px] shadow-md p-4 rounded-lg cursor-pointer transition duration-300 hover:bg-gray-200"
-                                                                        >
-                                                                            <p className="font-bold">{a?.title}</p>
-                                                                            <p className="text-sm text-gray-500">{a?.status}</p>
-                                                                        </div>
-                                                                    )
-                                                                }
-                                                            </Draggable>
+                                    )}
+                                </Droppable>
+                            </div>
 
 
-                                                        ))
-
-                                                        }
-                                                        {provided.placeholder}
-                                                    </div>
-                                                )
-                                            }
-
-                                        </Droppable>
-                                    </div>
-                                ))}
+                                
+                            ))}
 
 
 
 
 
-                        </div>
+                    </div>
 
-                    </DragDropContext>
+                </DragDropContext>
             }
 
 
@@ -227,4 +284,3 @@ function DashboardColumn({ isActive, Datas, ShowTaskModal }) {
     );
 }
 
-export default DashboardColumn;

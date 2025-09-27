@@ -178,19 +178,16 @@ function Banner() {
           </motion.div>
 
           <motion.div 
-            className="lg:w-[55%] md:w-[50%] w-full z-10 flex justify-center md:justify-end py-12"
+            className="lg:w-[55%] md:w-[50%] w-full z-10 flex justify-center md:justify-end py-12 md:pr-14"
             variants={imageVariants}
             initial="hidden"
             animate="visible"
           >
             <motion.img 
               src={location.pathname === '/' ? home : location.pathname === '/Contact' ? contact : about}
-              className="lg:max-w-[500px] md:max-w-[380px] max-w-[300px] w-full rounded-lg shadow-2xl"
+              className="lg:max-w-[500px] md:max-w-[380px] max-w-[300px] w-full"
               alt="DigitalBucket illustration"
-              whileHover={{ 
-                scale: 1.05,
-                transition: { duration: 0.3 }
-              }}
+              
             />
           </motion.div>
         </div>
