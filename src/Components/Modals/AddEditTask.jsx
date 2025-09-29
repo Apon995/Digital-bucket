@@ -28,6 +28,7 @@ function AddEditTask({
             axiosFetch
                 .get(`/Todo?ID=${isActive}`)
                 .then((res) => {
+                
                     setData(res?.data);
                 })
                 .catch((error) => {
@@ -35,6 +36,9 @@ function AddEditTask({
                 });
         }
     }, [isActive]);
+
+
+    
 
     const HandleSubmit = (e) => {
         e.preventDefault();
@@ -52,6 +56,7 @@ function AddEditTask({
             description: Description,
             status: status,
         };
+
 
         axiosFetch
             .post(`/TaskInsert?ID=${isActive}&BoardName=${BoardName}&status=${status}`, obj)
@@ -93,14 +98,18 @@ function AddEditTask({
             status: currentStatus,
         };
 
+     if(description == Description && title == TaskName) return ; 
+
+
         axiosFetch
             .put(
-                `/UpdateTask?ID=${isActive}&columnId=${columnId}&title=${title}&TaskId=${TaskId}`,
+                `/UpdateTask?ID=${isActive}&columnId=${columnId}&TaskId=${TaskId}`,
                 obj
             )
             .then((res) => {
+                
                 if (res?.data?.modifiedCount == 1) {
-                    Swal.fire({
+                    Swal.fire({ 
                         title: "Modified",
                         text: "Successfully Modified Task !",
                         icon: "success",
@@ -112,6 +121,7 @@ function AddEditTask({
                 }
             })
             .catch((error) => {
+                console.log(error)
                 if (error) {
                     toast.warn("Somethind went worng try again !", {
                         position: "top-right",

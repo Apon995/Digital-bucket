@@ -3,6 +3,7 @@ import Swal from 'sweetalert2';
 import useFetch from '../../CustomHooks/useFetch';
 import { ToastContainer, toast } from 'react-toastify';
 import ding from '../../assets/sounds/ding.mp3'
+import { motion } from 'framer-motion';
 
 
 
@@ -159,90 +160,150 @@ function ShowTaskDetails({ isActive, setShowDetails, Rcvobj, refetch, setEditTas
     return (
         <>
 
-            <>
-                <div
-                    onClick={(e) => {
-                        if (e.target !== e.currentTarget) {
-                            return;
-                        }
+         
 
+
+            <div
+                className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+                onClick={(e) => {
+                    if (e.target === e.currentTarget) {
                         setShowDetails(false)
-
-                    }}
-                    className="fixed right-0 top-0 px-2 py-4 overflow-scroll scrollbar-hide  z-50 left-0 bottom-0 justify-center items-center flex dropdown"
+                    }
+                }}
+            >
+                <motion.div
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                 
+                     className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto p-6"
                 >
-                    {/* show Task Modal  */}
-
-                    <div className=" scrollbar-hide overflow-y-scroll max-h-[115vh]  my-auto  bg-white dark:bg-white text-black dark:text-white font-bold shadow-md shadow-[#364e7e1a] max-w-md mx-auto  w-full px-6  py-8 rounded-xl ">
-                        <div className='flex flex-row items-center justify-between'>
-                            <div className='w-[90%] text-wrap '>
-                                <h3 className=" font-bold text-[#635fc7] text-xl  ">{title || 'Example Task'}?</h3>
-
+                    
+                        {/* Header */}
+                        <div className="flex items-center justify-between ">
+                            <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                    <i className="fa-solid fa-pen-to-square text-[#635fc7]"></i>
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-semibold text-gray-900">Edit Status</h3>
+                                    <p className="text-sm text-gray-500">Update task status</p>
+                                </div>
                             </div>
-                            <div className='w-[10%]'>
-
-                                <button onClick={() => {
+                            <button
+                                onClick={() => {
                                     setEditTask(true)
                                     setShowDetails(false)
-                                }} className='text-gray-600 text-xl '><i className="fa-solid fa-pen-to-square"></i></button>
-
-
-                            </div>
-                        </div>
-                        <p className="text-gray-700 font-[600] tracking-wide text-sm pt-6">
-                            {description || ''}
-                        </p>
-
-                        <div className='pt-5'>
-                            <span className="  text-base dark:text-black text-black">
-                                Current Status
-                            </span>
-                            <div className=" w-full mt-2 select-status flex-grow px-4 py-2 rounded-md text-base text-gray-700 border-[2px] outline-none border-gray-600  ">
-                                {status || 'Todo'}
-                            </div>
-
-                        </div>
-                        <div className="py-2 text-base dark:text-black text-black">
-                            <h1 className='mb-2'>You can change status</h1>
-                            <select
-                                name="status"
-                                id="status"
-                                onChange={(e) => { setupdateStatus(e.target.value) }}
-                                value={updatestatus}
-                                className=" select-status w-full text-gray-700 flex-grow px-4 py-2 rounded-md text-base border-[2px] outline-none border-gray-600 focus:border-[#635fc7] "
+                                }}
+                                className="text-gray-500 hover:text-gray-600 transition-colors"
                             >
-                                {data?.Columns?.map((element, index) => (
-                                    <option key={index} value={element?.columnName}>
-                                        {element?.columnName}
-                                    </option>
-                                ))}
-                            </select>
+                                <i className="fa-solid fa-pen-to-square"></i>
+                            </button>
                         </div>
 
-                        <div className=" flex md:flex-row flex-col w-full gap-5 md:gap-4 mt-8 items-center justify-center">
+                        {/* Content */}
+                        <div className='space-y-1 py-5'>
+                            <div className='space-y-2'>
+
+                                <label className="text-sm font-medium text-gray-700">
+                                    Task Name
+                                </label>
+                                <input
+                                    id="Task"
+                                    name="Task"
+                                    type="text"
+                                    defaultValue={title || ""}
+                                    autoComplete="off"
+                                    readOnly
+                                    className="w-full px-4 py-3 border-2 focus:border-gray-500 outline-none rounded-lg  transition-all duration-300"
+
+                                />
+
+
+                            </div>
+
+                            {
+                                description &&
+                                <div className='space-y-2'>
+
+                                    <label className="text-sm font-medium text-gray-700">
+                                        Description
+                                    </label>
+                                    <textarea
+
+
+
+                                        defaultValue={description || ""}
+                                        autoComplete="off"
+                                        readOnly
+                                        className="w-full px-4 min-h-20 max-h-28 py-3 border-2 focus:border-gray-500 outline-none rounded-lg  transition-all duration-300"
+
+                                    />
+
+
+                                </div>
+                            }
+
+                          <div className='space-y-2'>
+
+                                <label className="text-sm font-medium text-gray-700">
+                                    Current Status
+                                </label>
+                                <input
+                                 
+                                    defaultValue={status || ""}
+                                    readOnly
+                                    className="w-full px-4 py-3 border-2 focus:border-gray-500 outline-none rounded-lg  transition-all duration-300"
+
+                                />
+
+
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium text-gray-700">
+                                    Changable Status
+                                </label>
+                                <select
+                                    name="status"
+                                    id="status"
+                                    onChange={(e) => { setupdateStatus(e.target.value) }}
+                                    value={updatestatus}
+                                      className="w-full px-4 py-3 border-2 focus:border-gray-500 outline-none rounded-lg  transition-all duration-300 "
+
+                                >
+                                    {data?.Columns?.map((element, index) => (
+                                        <option key={index} value={element?.columnName}>
+                                            {element?.columnName}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+
+                        </div>
+
+
+                        <div className=" flex gap-3">
                             <button
                                 onClick={HandleUpdatestatus}
                                 disabled={status == updatestatus}
-                                className="w-full text-base items-center text-[#635fc7]  bg-[#635fc71a] rounded-md py-2 md:rounded-full disabled:bg-blue-500 disabled:text-black disabled:opacity-80">
+                                className="flex-1 py-3 bg-gradient-to-r from-[#635fc7] to-[#817cf0] text-white rounded-lg font-medium hover:opacity-90 transition-all duration-300 shadow-md"
+                            >
                                 Update status
                             </button>
-                            <button onClick={HandleDelete} className="w-full text-base items-center text-white rounded-md hover:opacity-90 bg-red-500 py-2 md:rounded-full">
+                            <button onClick={HandleDelete}
+                                className="flex-1 py-3 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-all duration-300"
+                            >
                                 Delete Task
                             </button>
+
                         </div>
 
-
-
-                    </div>
-
-                </div>
+                </motion.div>
+            </div>
 
 
 
-
-
-
-            </>
 
 
 
