@@ -111,7 +111,7 @@ function AddEditTask({
                 if (res?.data?.modifiedCount == 1) {
                     Swal.fire({ 
                         title: "Modified",
-                        text: "Successfully Modified Task !",
+                        text: "Successfully column deleted !",
                         icon: "success",
                         showConfirmButton: false,
                         timer: 1500,
@@ -121,7 +121,6 @@ function AddEditTask({
                 }
             })
             .catch((error) => {
-                console.log(error)
                 if (error) {
                     toast.warn("Somethind went worng try again !", {
                         position: "top-right",

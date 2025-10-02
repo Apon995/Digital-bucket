@@ -131,9 +131,11 @@ export default function DashboardColumn({ isActive, Datas, ShowTaskModal }) {
         2: "bg-green-500",
         3: "bg-blue-500",
         4: "bg-yellow-500",
-        5: "bg-purple-500"
+        5: "bg-purple-500",
+        6: "bg-orange-700"
     };
 
+    
 
     return (
         <>
@@ -145,9 +147,9 @@ export default function DashboardColumn({ isActive, Datas, ShowTaskModal }) {
                     <div className="flex flex-wrap xl:justify-between gap-5 justify-center min-h-screen">
 
                         {
-                            data?.Columns?.map((element) => (
+                            data?.Columns?.map((element , index) => (
                                  <div 
-                                key={element?.id} 
+                                key={index} 
                                 className="w-80 bg-gray-50 rounded-lg shadow-sm p-4 flex flex-col h-full"
                             >
                                 <div className="font-semibold flex items-center gap-3 mb-4 px-2">

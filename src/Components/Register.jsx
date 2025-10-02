@@ -21,7 +21,7 @@ function Register() {
         if (!/^(?=.*[A-Z])(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]).{6,}$/.test(password)) {
 
             return toast.warn("Please Type strong password!", {
-                position: 'top-center',
+                position: 'top-right',
                 hideProgressBar: true,
                 autoClose: 2000
             })
@@ -35,7 +35,7 @@ function Register() {
                 if (res) {
                     e.target.reset();
                     toast.success("Succesfully create an account ! please signin now .", {
-                        position: "top-center",
+                        position: "top-right",
                         hideProgressBar: true,
                         autoClose: 3000
                     })
@@ -45,12 +45,23 @@ function Register() {
                 }
 
             })
-            .catch(() => {
-                toast.warning("Something worng try again !", {
+            .catch((error) => {
+                
+                if(error == "FirebaseError: Firebase: Error (auth/email-already-in-use)."){
+                    toast.warning("This email already exists !", {
                     position: "top-right",
                     hideProgressBar: true,
                     autoClose: 1500
                 })
+                }
+                else {
+                    toast.warning("Something worng try again !", {
+                        position: "top-right",
+                        hideProgressBar: true,
+                        autoClose: 1500
+                    })
+
+                }
             })
 
 
@@ -63,7 +74,7 @@ function Register() {
                 if (res) {
 
                     toast.success("sign in successfull !", {
-                        position: "top-center",
+                        position: "top-right",
                         hideProgressBar: true,
                         autoClose: 3000
                     })
@@ -71,7 +82,7 @@ function Register() {
 
                     setTimeout(() => {
                         navigate(location.state ? location.state : '/')
-                    }, 2000);
+                    }, 1000);
 
                 }
 

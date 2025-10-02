@@ -26,7 +26,7 @@ function Login() {
         if (!/^(?=.*[A-Z])(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]).{6,}$/.test(password)) {
 
             return toast.warn("Please Type correct password !", {
-                position: 'top-center',
+                position: 'top-right',
                 hideProgressBar: true,
                 autoClose: 2000
             })
@@ -38,7 +38,7 @@ function Login() {
 
                 if (res) {
                     toast.success("Sign in successfull !", {
-                        position: "top-center",
+                        position: "top-right",
                         hideProgressBar: true,
                         autoClose: 3000
                     })
@@ -46,7 +46,7 @@ function Login() {
 
                     setTimeout(() => {
                         navigate(location.state ? location.state : '/')
-                    }, 2000);
+                    }, 1000);
 
                 }
 
@@ -54,7 +54,7 @@ function Login() {
             .catch(() => {
                 if ("auth / invalid - credential") {
                     toast.warning("please check your Email or password !", {
-                        position: "top-center",
+                        position: "top-right",
                         hideProgressBar: true,
                         autoClose: false
 
@@ -74,7 +74,7 @@ function Login() {
                 if (res) {
 
                     toast.success("Sign in successfull !", {
-                        position: "top-center",
+                        position: "top-right",
                         hideProgressBar: true,
                         autoClose: 3000
                     })
@@ -82,7 +82,7 @@ function Login() {
 
                     setTimeout(() => {
                         navigate(location.state ? location.state : '/')
-                    }, 2000);
+                    }, 1000);
 
                 }
 
