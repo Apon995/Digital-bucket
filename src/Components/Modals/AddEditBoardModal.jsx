@@ -48,13 +48,14 @@ function AddEditBoardModal({ setShowBoardModal, refetch, Type, isActive }) {
             ))
         };
 
+        console.log(obj)
+
 
 
         axiosFetch
             .post("/createBoard", obj)
             .then((res) => {
 
-                console.log(res.data)
                 if (res.data?.insertedId) {
                     Swal.fire({
                         title: "Added Board !",
@@ -80,6 +81,8 @@ function AddEditBoardModal({ setShowBoardModal, refetch, Type, isActive }) {
 
 
     };
+
+    console.log(initialColumn)
 
     const HandleEdit = (e) => {
         e.preventDefault();
@@ -175,7 +178,7 @@ function AddEditBoardModal({ setShowBoardModal, refetch, Type, isActive }) {
 
 
     const handleAddColumn = () => {
-        if (initialColumn.length >= 6) return;
+        if (initialColumn.length >= 3) return;
         if (Type == 'new') {
             const newId = initialColumn.length
                 ? initialColumn[initialColumn.length - 1].id + 1
@@ -360,7 +363,7 @@ function AddEditBoardModal({ setShowBoardModal, refetch, Type, isActive }) {
                                     <button
                                         onClick={handleAddColumn}
                                         type="button"
-                                        className={` ${initialColumn.length >= 6 ? "hidden" : "block"} w-full py-3 bg-gray-100 text-[#635fc7] rounded-lg font-medium hover:bg-gray-200 transition-all duration-300 flex items-center justify-center gap-2 `}
+                                        className={` ${initialColumn.length >= 3 ? "hidden" : "block"} w-full py-3 bg-gray-100 text-[#635fc7] rounded-lg font-medium hover:bg-gray-200 transition-all duration-300 flex items-center justify-center gap-2 `}
                                     >
                                         <i className="fa-solid fa-plus"></i>
                                         Add New Column
@@ -449,7 +452,7 @@ function AddEditBoardModal({ setShowBoardModal, refetch, Type, isActive }) {
                                     <button
                                         onClick={handleAddColumn}
                                         type="button"
-                                        className={` ${data?.Columns?.length >= 6 ? "hidden" : "block"} w-full py-3 bg-gray-100 text-[#635fc7] rounded-lg font-medium hover:bg-gray-200 transition-all duration-300 flex items-center justify-center gap-2 `}
+                                        className={` ${data?.Columns?.length >= 3 ? "hidden" : "block"} w-full py-3 bg-gray-100 text-[#635fc7] rounded-lg font-medium hover:bg-gray-200 transition-all duration-300 flex items-center justify-center gap-2 `}
                                     >
                                         <i className="fa-solid fa-plus"></i>
                                         Add New Column
