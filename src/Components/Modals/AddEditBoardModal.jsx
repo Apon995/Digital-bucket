@@ -174,9 +174,6 @@ function AddEditBoardModal({ setShowBoardModal, refetch, Type, isActive }) {
     };
 
 
-
-    console.log(data)
-
     const handleAddColumn = () => {
         if (initialColumn.length >= 6) return;
         if (Type == 'new') {
@@ -202,12 +199,6 @@ function AddEditBoardModal({ setShowBoardModal, refetch, Type, isActive }) {
 
         }
     };
-
-
-    console.log(data);
-
-
-
 
 
     const handleColumnDelete = (id, name) => {
@@ -344,15 +335,6 @@ function AddEditBoardModal({ setShowBoardModal, refetch, Type, isActive }) {
                                                     autoComplete="off"
                                                     name={`column${index + 1}`}
                                                     id={`column${index + 1}`}
-                                                    // onChange={(e) =>
-                                                    //     setInitialColumn((pre) =>
-                                                    //         pre?.map((col) =>
-                                                    //             col?.id == column?.id
-                                                    //                 ? { ...col, name: e?.target?.value }
-                                                    //                 : col
-                                                    //         )
-                                                    //     )
-                                                    // }
                                                     onChange={(e) =>
                                                         HandleColumnChange(column.id, e.target?.value)
                                                     }
