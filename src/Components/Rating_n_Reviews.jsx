@@ -16,10 +16,12 @@ export default function Rating_n_Reviews() {
           <div className="lg:w-1/2 w-full relative">
             <motion.div
               className="relative z-10"
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7 }}
               viewport={{ once: true }}
+
+
             >
               {/* Main image container with modern design */}
               <div className="bg-gradient-to-br from-[#635fc7] to-[#817cf0] p-6 md:p-8 rounded-2xl shadow-2xl">
@@ -63,9 +65,9 @@ export default function Rating_n_Reviews() {
           <div className="lg:w-1/2 w-full">
             <motion.div
               className="space-y-6"
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.7, delay: 0.4 }}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7 }}
               viewport={{ once: true }}
             >
               <div>

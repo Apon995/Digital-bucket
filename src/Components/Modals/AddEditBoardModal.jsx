@@ -82,7 +82,7 @@ function AddEditBoardModal({ setShowBoardModal, refetch, Type, isActive }) {
 
     };
 
-    console.log(initialColumn)
+   
 
     const HandleEdit = (e) => {
         e.preventDefault();
@@ -213,7 +213,7 @@ function AddEditBoardModal({ setShowBoardModal, refetch, Type, isActive }) {
         else {
             Swal.fire({
                 title: "Delete this Column ?",
-                text: `Are you sure delete ${name || 'column'} ?`,
+                text: `Are you sure delete " ${name || 'column'} " this column ?`,
                 icon: "question",
                 showCancelButton: true,
                 customClass: {
@@ -234,7 +234,7 @@ function AddEditBoardModal({ setShowBoardModal, refetch, Type, isActive }) {
                             if (res.data.modifiedCount == 1) {
                                 Swal.fire({
                                     title: "Deleted column",
-                                    text: "Successfully Delete Task !",
+                                    text: "Successfully Deleted column !",
                                     icon: "success",
                                     showConfirmButton: false,
                                     timer: 2000,

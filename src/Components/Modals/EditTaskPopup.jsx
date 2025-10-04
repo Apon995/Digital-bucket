@@ -77,7 +77,7 @@ export default function EditTaskpopup({ setEditTask, setEdit, setTypeEdit }) {
               }}
               className="flex-1 py-3 bg-gradient-to-r from-[#635fc7] to-[#817cf0] text-white rounded-lg font-medium hover:opacity-90 transition-all duration-300 shadow-md"
             >
-              Continue to Edit
+              Continue
             </button>
           </div>
         </div>
